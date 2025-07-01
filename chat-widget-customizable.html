@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Widget</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <!-- Chat widget code (same as above) -->
+    
+    <script>
+        // Listen for configuration from parent window
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'chat-config') {
+                window.chatWidgetConfig = event.data.config;
+            }
+        });
+        
+        // Rest of the JavaScript code remains the same
+    </script>
+</body>
+</html>
