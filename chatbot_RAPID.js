@@ -31,7 +31,7 @@
         sendButtonText: 'Send',
         
         // Logo Configuration
-        showLogo: false,                // Set to true to show logo in header
+        showLogo: true,                // Set to true to show logo in header
         logoUrl: 'https://rapidtakeoffsandestimating.com.au/wp-content/uploads/2024/08/rapid-logo-black.png',                    // URL to your logo image
         logoSize: '32px',               // Logo dimensions (square)
         logoPosition: 'left',           // 'left' or 'right' of title
@@ -419,30 +419,18 @@
             messageDiv.className = `chat-widget-message ${isUser ? 'user' : 'bot'}`;
             
             const bubble = document.createElement('div');
- 		addMessage(message, isUser = false) {
-    		const messagesContainer = document.getElementById('chat-widget-messages');
-  		    const messageDiv = document.createElement('div');
-    		messageDiv.className = `chat-widget-message ${isUser ? 'user' : 'bot'}`;
-    
-    		const bubble = document.createElement('div');
-    		bubble.className = 'chat-widget-message-bubble';
-    
-    	if (!isUser) {
-        	// Format bot messages
-        	let formattedMessage = message
-            	.replace(/\n/g, '<br>')
-            	.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            	.replace(/### (.*?)(<br>|$)/g, '<h3 style="margin: 16px 0 8px 0; font-size: 16px; font-weight: 600; color: #374151;">$1</h3>');
-        	bubble.innerHTML = formattedMessage;
-    	} else {
-        	// For user messages, use textContent to prevent HTML injection
-        	bubble.textContent = message;
-    	}
-    
-    messageDiv.appendChild(bubble);
-    messagesContainer.appendChild(messageDiv);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
+            bubble.className = 'chat-widget-message-bubble';
+            
+            if (!isUser) {
+                // Format bot messages
+                let formattedMessage = message
+                    .replace(/\n/g, '<br>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                bubble.innerHTML = formattedMessage;
+            } else {
+                bubble.textContent = message;
+            }
+            
             messageDiv.appendChild(bubble);
             messagesContainer.appendChild(messageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
