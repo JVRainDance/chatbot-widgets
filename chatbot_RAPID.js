@@ -31,7 +31,7 @@
         sendButtonText: 'Send',
         
         // Logo Configuration
-        showLogo: true,                // Set to true to show logo in header
+        showLogo: false,                // Set to true to show logo in header
         logoUrl: 'https://rapidtakeoffsandestimating.com.au/wp-content/uploads/2024/08/rapid-logo-black.png',                    // URL to your logo image
         logoSize: '32px',               // Logo dimensions (square)
         logoPosition: 'left',           // 'left' or 'right' of title
