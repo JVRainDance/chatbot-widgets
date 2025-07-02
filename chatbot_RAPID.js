@@ -419,19 +419,30 @@
             messageDiv.className = `chat-widget-message ${isUser ? 'user' : 'bot'}`;
             
             const bubble = document.createElement('div');
-            bubble.className = 'chat-widget-message-bubble';
-            
-            if (!isUser) {
-                // Format bot messages
-                let formattedMessage = message
-                    .replace(/\n/g, '<br>')
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/### (.*?)(<br>|$)/g, '<h3 style="margin: 16px 0 8px 0; font-size: 16px; font-weight: 600; color: #374151;">$1</h3>');
-                bubble.innerHTML = formattedMessage;
-            }
-                bubble.textContent = message;
-            }
-            
+ 		addMessage(message, isUser = false) {
+    		const messagesContainer = document.getElementById('chat-widget-messages');
+  		    const messageDiv = document.createElement('div');
+    		messageDiv.className = `chat-widget-message ${isUser ? 'user' : 'bot'}`;
+    
+    		const bubble = document.createElement('div');
+    		bubble.className = 'chat-widget-message-bubble';
+    
+    	if (!isUser) {
+        	// Format bot messages
+        	let formattedMessage = message
+            	.replace(/\n/g, '<br>')
+            	.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            	.replace(/### (.*?)(<br>|$)/g, '<h3 style="margin: 16px 0 8px 0; font-size: 16px; font-weight: 600; color: #374151;">$1</h3>');
+        	bubble.innerHTML = formattedMessage;
+    	} else {
+        	// For user messages, use textContent to prevent HTML injection
+        	bubble.textContent = message;
+    	}
+    
+    messageDiv.appendChild(bubble);
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
             messageDiv.appendChild(bubble);
             messagesContainer.appendChild(messageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
