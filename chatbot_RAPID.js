@@ -432,6 +432,7 @@
                 bubble.textContent = message;
             }
             
+            const messageDiv = document.createElement('div');
             messageDiv.appendChild(bubble);
             messagesContainer.appendChild(messageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
