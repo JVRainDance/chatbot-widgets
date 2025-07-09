@@ -2,7 +2,7 @@
     // Prevent multiple instances
     if (window.ChatWidgetLoaded) return;
     window.ChatWidgetLoaded = true;
-
+    
     // Configuration - you can customize this for each client
     const config = {
         webhookUrl: 'https://raindance.app.n8n.cloud/webhook/a0d536ef-e072-4844-8090-2ee9b36f9fb8/chat',
