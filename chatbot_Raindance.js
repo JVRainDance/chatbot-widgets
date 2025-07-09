@@ -5,7 +5,7 @@
     
     // Configuration - you can customize this for each client
     const config = {
-        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/a0d536ef-e072-4844-8090-2ee9b36f9fb8/chat',
+        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/b7183c87-d1c1-497e-8cec-f76f7b2a938d/chat',
         primaryColor: '#2563eb',
         position: 'bottom-right' // bottom-right, bottom-left, etc.
     };
