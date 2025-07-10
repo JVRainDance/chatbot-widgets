@@ -10,8 +10,8 @@
         webhookUrl: 'https://raindance.app.n8n.cloud/webhook/8a2b3071-fbaa-48f8-9431-b715df58f52b/chat',
 
         // Colors & Branding
-        primaryColor: '#D86C0C',        // Main brand color (button, header, user messages)
-        primaryColorHover: '#D86C0C',   // Hover state for primary color
+        primaryColor: '#55AFD3',        // Main brand color (button, header, user messages)
+        primaryColorHover: '#55AFD3',   // Hover state for primary color
         secondaryColor: '#f3f4f6',      // Bot message background
         textColor: '#374151',           // Bot message text color
         borderColor: '#e5e7eb',         // Border colors
@@ -25,14 +25,14 @@
         buttonSize: '60px',
         
         // Content & Text
-        title: 'RAPID Bot',
+        title: 'BIM Bot',
         welcomeMessage: 'Hello! Welcome to our chat. How can I help you today?',
         placeholder: 'Type your message...',
         sendButtonText: 'Send',
         
         // Logo Configuration
         showLogo: false,                // Set to true to show logo in header
-        logoUrl: 'https://rapidtakeoffsandestimating.com.au/wp-content/uploads/2024/08/rapid-logo-black.png',                    // URL to your logo image
+        logoUrl: '',                    // URL to your logo image
         logoSize: '32px',               // Logo dimensions (square)
         logoPosition: 'left',           // 'left' or 'right' of title
         
