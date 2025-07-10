@@ -10,8 +10,12 @@
         webhookUrl: 'https://raindance.app.n8n.cloud/webhook/b7183c87-d1c1-497e-8cec-f76f7b2a938d/chat',
         
         // Colors & Branding
-        primaryColor: '##ED1680',        // Main brand color (button, header, user messages)
-        primaryColorHover: '##ED1680',   // Hover state for primary color
+        primaryColor: background: linear-gradient(
+                       to right,
+                        ##ed0789 30%,     
+                        ##f27024 100%   
+                ); ,                    // Main brand color (button, header, user messages)
+        primaryColorHover: '#ed0789',   // Hover state for primary color
         secondaryColor: '#f3f4f6',      // Bot message background
         textColor: '#374151',           // Bot message text color
         borderColor: '#e5e7eb',         // Border colors
