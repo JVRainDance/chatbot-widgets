@@ -25,7 +25,7 @@
         buttonSize: '60px',
         
         // Content & Text
-        title: 'RAPID Bot',
+        title: 'Raindance Bot',
         welcomeMessage: 'Hello! Welcome to our chat. How can I help you today?',
         placeholder: 'Type your message...',
         sendButtonText: 'Send',
