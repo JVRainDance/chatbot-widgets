@@ -88,7 +88,7 @@
             ${positionStyles.button.left ? `left: ${positionStyles.button.left};` : ''}
             ${positionStyles.button.right ? `right: ${positionStyles.button.right};` : ''}
             z-index: 10000;
-            background-color: ${config.primaryColor};
+            background: ${config.primaryColor};
             color: white;
             border: none;
             border-radius: ${config.buttonBorderRadius};
