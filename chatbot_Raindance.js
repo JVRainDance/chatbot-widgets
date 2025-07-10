@@ -10,7 +10,7 @@
         webhookUrl: 'https://raindance.app.n8n.cloud/webhook/b7183c87-d1c1-497e-8cec-f76f7b2a938d/chat',
         
         // Colors & Branding
-        primaryColor: background: linear-gradient(
+        primaryColor: linear-gradient(
                        to right,
                         ##ed0789 30%,     
                         ##f27024 100%   
