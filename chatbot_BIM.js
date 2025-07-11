@@ -87,7 +87,7 @@
             ${positionStyles.button.bottom ? `bottom: ${positionStyles.button.bottom};` : ''}
             ${positionStyles.button.left ? `left: ${positionStyles.button.left};` : ''}
             ${positionStyles.button.right ? `right: ${positionStyles.button.right};` : ''}
-            z-index: 10000;
+            z-index: 2147483647;
             background-color: ${config.primaryColor};
             color: white;
             border: none;
@@ -121,7 +121,7 @@
             background: white;
             border-radius: ${config.borderRadius};
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            z-index: 10000;
+            z-index: 2147483647;
             display: none;
             flex-direction: column;
             font-family: ${config.fontFamily};
