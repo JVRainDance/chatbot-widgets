@@ -307,7 +307,7 @@
         <div class="chat-widget-container">
             <button class="chat-widget-button" id="chat-widget-toggle">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-     xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2">
+     xmlns="http://www.w3.org/2000/svg" stroke="#fff" stroke-width="2">
   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
 </svg><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg></button>
@@ -320,7 +320,7 @@
                     </div>
                     <button class="chat-widget-close" id="chat-widget-close">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-     xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2">
+     xmlns="http://www.w3.org/2000/svg" stroke="#fff" stroke-width="2">
   <line x1="18" y1="6" x2="6" y2="18"/>
   <line x1="6" y1="6" x2="18" y2="18"/>
 </svg><line x1="18" y1="6" x2="6" y2="18"></line>
