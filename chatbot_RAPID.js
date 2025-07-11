@@ -361,7 +361,11 @@
             // Add HTML
             const container = document.createElement('div');
             container.innerHTML = chatHTML;
-            document.body.appendChild(container);
+            if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", () => document.body.appendChild(container));
+} else {
+  document.body.appendChild(container);
+}
 
             // Handle logo loading errors
             if (config.showLogo && config.logoUrl) {
