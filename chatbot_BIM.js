@@ -82,12 +82,17 @@
         }
         
         .chat-widget-button {
+    display: flex !important;
+    position: fixed !important;
+    z-index: 2147483647 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
             position: fixed;
             ${positionStyles.button.top ? `top: ${positionStyles.button.top};` : ''}
             ${positionStyles.button.bottom ? `bottom: ${positionStyles.button.bottom};` : ''}
             ${positionStyles.button.left ? `left: ${positionStyles.button.left};` : ''}
             ${positionStyles.button.right ? `right: ${positionStyles.button.right};` : ''}
-            z-index: 2147483647;
+            z-index: 10000;
             background-color: ${config.primaryColor};
             color: white;
             border: none;
@@ -121,7 +126,7 @@
             background: white;
             border-radius: ${config.borderRadius};
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            z-index: 2147483647;
+            z-index: 10000;
             display: none;
             flex-direction: column;
             font-family: ${config.fontFamily};
@@ -306,9 +311,7 @@
     const chatHTML = `
         <div class="chat-widget-container">
             <button class="chat-widget-button" id="chat-widget-toggle">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
+                💬
             </button>
             
             <div class="chat-widget-window" id="chat-widget-window">
@@ -318,10 +321,7 @@
                         <h3>${config.title}</h3>
                     </div>
                     <button class="chat-widget-close" id="chat-widget-close">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
+                        💬
                     </button>
                 </div>
                 
@@ -356,9 +356,20 @@
             document.head.appendChild(styleSheet);
 
             // Add HTML
-            const container = document.createElement('div');
-            container.innerHTML = chatHTML;
-            document.body.appendChild(container);
+            
+const container = document.createElement('div');
+const shadow = container.attachShadow({ mode: 'open' });
+
+const styleSheet = document.createElement('style');
+styleSheet.textContent = styles;
+shadow.appendChild(styleSheet);
+
+const widgetWrapper = document.createElement('div');
+widgetWrapper.innerHTML = chatHTML;
+shadow.appendChild(widgetWrapper);
+
+document.body.appendChild(container);
+
 
             // Handle logo loading errors
             if (config.showLogo && config.logoUrl) {
