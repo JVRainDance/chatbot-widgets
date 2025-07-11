@@ -1,16 +1,3 @@
-/**
- * === Custom Chatbot Widget Template ===
- * To use this template, replace the following placeholders:
- *
- * {{BRAND_NAME}}         → e.g., "Rapid Estimating"
- * {{WEBHOOK_URL}}        → Your chatbot's webhook or backend agent URL
- * {{PRIMARY_COLOR}}      → Hex color for brand styling, e.g., "#009688"
- * {{PRIMARY_COLOR_RGB}}  → Same color in rgb format, e.g., "0, 150, 136"
- *
- * Once customized, upload this .js file and embed in your site like:
- * <script src="https://yourdomain.com/chatbot.js"></script>
- */
-
 (function() {
     // Prevent multiple instances
     if (window.ChatWidgetLoaded) return;
@@ -20,15 +7,15 @@
     // Edit this section for each client
     const config = {
         // API Configuration
-        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/b7183c87-d1c1-497e-8cec-f76f7b2a938d/chat',
-        
+        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/8a2b3071-fbaa-48f8-9431-b715df58f52b/chat',
+
         // Colors & Branding
-        primaryColor: 'linear-gradient(to right, {{PRIMARY_COLOR}} 30%, {{PRIMARY_COLOR}} 100%)', // Main brand color (button, header, user messages)
-        primaryColorHover: '{{PRIMARY_COLOR}}',   // Hover state for primary color
-        secondaryColor: '{{PRIMARY_COLOR}}',      // Bot message background
-        textColor: '{{PRIMARY_COLOR}}',           // Bot message text color
-        borderColor: '{{PRIMARY_COLOR}}',         // Border colors
-        inputBorderColor: '{{PRIMARY_COLOR}}',    // Input field border
+        primaryColor: '#55AFD3',        // Main brand color (button, header, user messages)
+        primaryColorHover: '#55AFD3',   // Hover state for primary color
+        secondaryColor: '#f3f4f6',      // Bot message background
+        textColor: '#374151',           // Bot message text color
+        borderColor: '#e5e7eb',         // Border colors
+        inputBorderColor: '#d1d5db',    // Input field border
         
         // Positioning & Layout
         position: 'bottom-right',       // Options: 'bottom-right', 'bottom-left', 'top-right', 'top-left'
@@ -45,7 +32,7 @@
         
         // Logo Configuration
         showLogo: false,                // Set to true to show logo in header
-        logoUrl: 'https://rapidtakeoffsandestimating.com.au/wp-content/uploads/2024/08/rapid-logo-black.png',                    // URL to your logo image
+        logoUrl: '',                    // URL to your logo image
         logoSize: '32px',               // Logo dimensions (square)
         logoPosition: 'left',           // 'left' or 'right' of title
         
@@ -95,13 +82,18 @@
         }
         
         .chat-widget-button {
+    display: flex !important;
+    position: fixed !important;
+    z-index: 2147483647 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
             position: fixed;
             ${positionStyles.button.top ? `top: ${positionStyles.button.top};` : ''}
             ${positionStyles.button.bottom ? `bottom: ${positionStyles.button.bottom};` : ''}
             ${positionStyles.button.left ? `left: ${positionStyles.button.left};` : ''}
             ${positionStyles.button.right ? `right: ${positionStyles.button.right};` : ''}
             z-index: 10000;
-            background: ${config.primaryColor};
+            background-color: ${config.primaryColor};
             color: white;
             border: none;
             border-radius: ${config.buttonBorderRadius};
@@ -291,7 +283,7 @@
         .chat-widget-dot {
             width: 6px;
             height: 6px;
-            background: {{PRIMARY_COLOR}};
+            background: #6b7280;
             border-radius: 50%;
             animation: typing 1.4s infinite;
         }
@@ -366,18 +358,28 @@
 
         init() {
             // Add styles
-            const styleSheet = document.createElement('style');
-            styleSheet.textContent = styles;
-            document.head.appendChild(styleSheet);
+            
 
             // Add HTML
-            const container = document.createElement('div');
-            container.innerHTML = chatHTML;
-            document.body.appendChild(container);
+            
+const container = document.createElement('div');
+const shadow = container.attachShadow({ mode: 'open' });
+        this.shadowRoot = shadow;
+
+const styleSheet = document.createElement('style');
+styleSheet.textContent = styles;
+shadow.appendChild(styleSheet);
+
+const widgetWrapper = document.createElement('div');
+widgetWrapper.innerHTML = chatHTML;
+shadow.appendChild(widgetWrapper);
+
+document.body.appendChild(container);
+
 
             // Handle logo loading errors
             if (config.showLogo && config.logoUrl) {
-                const logo = document.getElementById('chat-widget-logo');
+                const logo = this.shadowRoot.getElementById('chat-widget-logo');
                 logo.onerror = () => {
                     logo.style.display = 'none';
                 };
@@ -398,10 +400,10 @@
         }
 
         bindEvents() {
-            const toggleBtn = document.getElementById('chat-widget-toggle');
-            const closeBtn = document.getElementById('chat-widget-close');
-            const input = document.getElementById('chat-widget-input');
-            const sendBtn = document.getElementById('chat-widget-send');
+            const toggleBtn = this.shadowRoot.getElementById('chat-widget-toggle');
+            const closeBtn = this.shadowRoot.getElementById('chat-widget-close');
+            const input = this.shadowRoot.getElementById('chat-widget-input');
+            const sendBtn = this.shadowRoot.getElementById('chat-widget-send');
 
             toggleBtn.addEventListener('click', () => this.toggle());
             closeBtn.addEventListener('click', () => this.close());
@@ -412,24 +414,24 @@
         }
 
         toggle() {
-            const window = document.getElementById('chat-widget-window');
+            const window = this.shadowRoot.getElementById('chat-widget-window');
             if (this.isOpen) {
                 this.close();
             } else {
                 window.classList.add('show');
                 this.isOpen = true;
-                document.getElementById('chat-widget-input').focus();
+                this.shadowRoot.getElementById('chat-widget-input').focus();
             }
         }
 
         close() {
-            const window = document.getElementById('chat-widget-window');
+            const window = this.shadowRoot.getElementById('chat-widget-window');
             window.classList.remove('show');
             this.isOpen = false;
         }
 
         addMessage(message, isUser = false) {
-            const messagesContainer = document.getElementById('chat-widget-messages');
+            const messagesContainer = this.shadowRoot.getElementById('chat-widget-messages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-widget-message ${isUser ? 'user' : 'bot'}`;
             
@@ -452,7 +454,7 @@
         }
 
         showTyping() {
-            const messagesContainer = document.getElementById('chat-widget-messages');
+            const messagesContainer = this.shadowRoot.getElementById('chat-widget-messages');
             const typingDiv = document.createElement('div');
             typingDiv.id = 'chat-widget-typing';
             typingDiv.className = 'chat-widget-message bot';
@@ -468,12 +470,12 @@
         }
 
         hideTyping() {
-            const typing = document.getElementById('chat-widget-typing');
+            const typing = this.shadowRoot.getElementById('chat-widget-typing');
             if (typing) typing.remove();
         }
 
         async sendMessage() {
-            const input = document.getElementById('chat-widget-input');
+            const input = this.shadowRoot.getElementById('chat-widget-input');
             const message = input.value.trim();
             
             if (!message) return;
