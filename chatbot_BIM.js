@@ -82,12 +82,12 @@
         }
         
         .chat-widget-button {
-            position: fixed;
+            position: fixed !important;
             ${positionStyles.button.top ? `top: ${positionStyles.button.top};` : ''}
             ${positionStyles.button.bottom ? `bottom: ${positionStyles.button.bottom};` : ''}
             ${positionStyles.button.left ? `left: ${positionStyles.button.left};` : ''}
             ${positionStyles.button.right ? `right: ${positionStyles.button.right};` : ''}
-            z-index: 10000;
+            z-index: 2147483647 !important;
             background-color: ${config.primaryColor};
             color: white;
             border: none;
@@ -110,7 +110,7 @@
         }
         
         .chat-widget-window {
-            position: fixed;
+            position: fixed !important;
             ${positionStyles.window.top ? `top: ${positionStyles.window.top};` : ''}
             ${positionStyles.window.bottom ? `bottom: ${positionStyles.window.bottom};` : ''}
             ${positionStyles.window.left ? `left: ${positionStyles.window.left};` : ''}
@@ -121,7 +121,7 @@
             background: white;
             border-radius: ${config.borderRadius};
             box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-            z-index: 10000;
+            z-index: 2147483647 !important;
             display: none;
             flex-direction: column;
             font-family: ${config.fontFamily};
@@ -297,7 +297,7 @@
                 ${positionStyles.window.right ? 'right: 10px;' : ''}
                 ${positionStyles.window.left ? 'left: 10px;' : ''}
                 ${positionStyles.window.bottom ? 'bottom: 80px;' : ''}
-                ${positionStyles.window.top ? 'top: 80px;' : ''}
+                ${Styles.window.top ? 'top: 80px;' : ''}
             }
         }
     `;
