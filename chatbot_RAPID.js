@@ -7,11 +7,11 @@
     // Edit this section for each client
     const config = {
         // API Configuration
-        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/8a2b3071-fbaa-48f8-9431-b715df58f52b/chat',
-
+        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/a0d536ef-e072-4844-8090-2ee9b36f9fb8/chat',
+        
         // Colors & Branding
-        primaryColor: '#55AFD3',        // Main brand color (button, header, user messages)
-        primaryColorHover: '#55AFD3',   // Hover state for primary color
+        primaryColor: '#D86C0C',        // Main brand color (button, header, user messages)
+        primaryColorHover: '#D86C0C',   // Hover state for primary color
         secondaryColor: '#f3f4f6',      // Bot message background
         textColor: '#374151',           // Bot message text color
         borderColor: '#e5e7eb',         // Border colors
@@ -25,14 +25,14 @@
         buttonSize: '60px',
         
         // Content & Text
-        title: 'BIM Bot',
+        title: 'RAPID Bot',
         welcomeMessage: 'Hello! Welcome to our chat. How can I help you today?',
         placeholder: 'Type your message...',
         sendButtonText: 'Send',
         
         // Logo Configuration
         showLogo: false,                // Set to true to show logo in header
-        logoUrl: '',                    // URL to your logo image
+        logoUrl: 'https://rapidtakeoffsandestimating.com.au/wp-content/uploads/2024/08/rapid-logo-black.png',                    // URL to your logo image
         logoSize: '32px',               // Logo dimensions (square)
         logoPosition: 'left',           // 'left' or 'right' of title
         
@@ -82,11 +82,6 @@
         }
         
         .chat-widget-button {
-    display: flex !important;
-    position: fixed !important;
-    z-index: 2147483647 !important;
-    opacity: 1 !important;
-    visibility: visible !important;
             position: fixed;
             ${positionStyles.button.top ? `top: ${positionStyles.button.top};` : ''}
             ${positionStyles.button.bottom ? `bottom: ${positionStyles.button.bottom};` : ''}
@@ -314,7 +309,9 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
      xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2">
   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-</svg>
+</svg> stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
             </button>
             
             <div class="chat-widget-window" id="chat-widget-window">
@@ -328,7 +325,10 @@
      xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2">
   <line x1="18" y1="6" x2="6" y2="18"/>
   <line x1="6" y1="6" x2="18" y2="18"/>
-</svg>
+</svg> stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
                     </button>
                 </div>
                 
@@ -358,28 +358,18 @@
 
         init() {
             // Add styles
-            
+            const styleSheet = document.createElement('style');
+            styleSheet.textContent = styles;
+            document.head.appendChild(styleSheet);
 
             // Add HTML
-            
-const container = document.createElement('div');
-const shadow = container.attachShadow({ mode: 'open' });
-        this.shadowRoot = shadow;
-
-const styleSheet = document.createElement('style');
-styleSheet.textContent = styles;
-shadow.appendChild(styleSheet);
-
-const widgetWrapper = document.createElement('div');
-widgetWrapper.innerHTML = chatHTML;
-shadow.appendChild(widgetWrapper);
-
-document.body.appendChild(container);
-
+            const container = document.createElement('div');
+            container.innerHTML = chatHTML;
+            document.body.appendChild(container);
 
             // Handle logo loading errors
             if (config.showLogo && config.logoUrl) {
-                const logo = this.shadowRoot.getElementById('chat-widget-logo');
+                const logo = document.getElementById('chat-widget-logo');
                 logo.onerror = () => {
                     logo.style.display = 'none';
                 };
@@ -400,10 +390,10 @@ document.body.appendChild(container);
         }
 
         bindEvents() {
-            const toggleBtn = this.shadowRoot.getElementById('chat-widget-toggle');
-            const closeBtn = this.shadowRoot.getElementById('chat-widget-close');
-            const input = this.shadowRoot.getElementById('chat-widget-input');
-            const sendBtn = this.shadowRoot.getElementById('chat-widget-send');
+            const toggleBtn = document.getElementById('chat-widget-toggle');
+            const closeBtn = document.getElementById('chat-widget-close');
+            const input = document.getElementById('chat-widget-input');
+            const sendBtn = document.getElementById('chat-widget-send');
 
             toggleBtn.addEventListener('click', () => this.toggle());
             closeBtn.addEventListener('click', () => this.close());
@@ -414,24 +404,24 @@ document.body.appendChild(container);
         }
 
         toggle() {
-            const window = this.shadowRoot.getElementById('chat-widget-window');
+            const window = document.getElementById('chat-widget-window');
             if (this.isOpen) {
                 this.close();
             } else {
                 window.classList.add('show');
                 this.isOpen = true;
-                this.shadowRoot.getElementById('chat-widget-input').focus();
+                document.getElementById('chat-widget-input').focus();
             }
         }
 
         close() {
-            const window = this.shadowRoot.getElementById('chat-widget-window');
+            const window = document.getElementById('chat-widget-window');
             window.classList.remove('show');
             this.isOpen = false;
         }
 
         addMessage(message, isUser = false) {
-            const messagesContainer = this.shadowRoot.getElementById('chat-widget-messages');
+            const messagesContainer = document.getElementById('chat-widget-messages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-widget-message ${isUser ? 'user' : 'bot'}`;
             
@@ -454,7 +444,7 @@ document.body.appendChild(container);
         }
 
         showTyping() {
-            const messagesContainer = this.shadowRoot.getElementById('chat-widget-messages');
+            const messagesContainer = document.getElementById('chat-widget-messages');
             const typingDiv = document.createElement('div');
             typingDiv.id = 'chat-widget-typing';
             typingDiv.className = 'chat-widget-message bot';
@@ -470,12 +460,12 @@ document.body.appendChild(container);
         }
 
         hideTyping() {
-            const typing = this.shadowRoot.getElementById('chat-widget-typing');
+            const typing = document.getElementById('chat-widget-typing');
             if (typing) typing.remove();
         }
 
         async sendMessage() {
-            const input = this.shadowRoot.getElementById('chat-widget-input');
+            const input = document.getElementById('chat-widget-input');
             const message = input.value.trim();
             
             if (!message) return;
