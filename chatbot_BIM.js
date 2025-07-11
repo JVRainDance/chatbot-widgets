@@ -357,6 +357,7 @@
             
 const container = document.createElement('div');
 const shadow = container.attachShadow({ mode: 'open' });
+        this.shadowRoot = shadow;
 
 const styleSheet = document.createElement('style');
 styleSheet.textContent = styles;
@@ -371,7 +372,7 @@ document.body.appendChild(container);
 
             // Handle logo loading errors
             if (config.showLogo && config.logoUrl) {
-                const logo = document.getElementById('chat-widget-logo');
+                const logo = this.shadowRoot.getElementById('chat-widget-logo');
                 logo.onerror = () => {
                     logo.style.display = 'none';
                 };
@@ -392,10 +393,10 @@ document.body.appendChild(container);
         }
 
         bindEvents() {
-            const toggleBtn = document.getElementById('chat-widget-toggle');
-            const closeBtn = document.getElementById('chat-widget-close');
-            const input = document.getElementById('chat-widget-input');
-            const sendBtn = document.getElementById('chat-widget-send');
+            const toggleBtn = this.shadowRoot.getElementById('chat-widget-toggle');
+            const closeBtn = this.shadowRoot.getElementById('chat-widget-close');
+            const input = this.shadowRoot.getElementById('chat-widget-input');
+            const sendBtn = this.shadowRoot.getElementById('chat-widget-send');
 
             toggleBtn.addEventListener('click', () => this.toggle());
             closeBtn.addEventListener('click', () => this.close());
@@ -406,24 +407,24 @@ document.body.appendChild(container);
         }
 
         toggle() {
-            const window = document.getElementById('chat-widget-window');
+            const window = this.shadowRoot.getElementById('chat-widget-window');
             if (this.isOpen) {
                 this.close();
             } else {
                 window.classList.add('show');
                 this.isOpen = true;
-                document.getElementById('chat-widget-input').focus();
+                this.shadowRoot.getElementById('chat-widget-input').focus();
             }
         }
 
         close() {
-            const window = document.getElementById('chat-widget-window');
+            const window = this.shadowRoot.getElementById('chat-widget-window');
             window.classList.remove('show');
             this.isOpen = false;
         }
 
         addMessage(message, isUser = false) {
-            const messagesContainer = document.getElementById('chat-widget-messages');
+            const messagesContainer = this.shadowRoot.getElementById('chat-widget-messages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-widget-message ${isUser ? 'user' : 'bot'}`;
             
@@ -446,7 +447,7 @@ document.body.appendChild(container);
         }
 
         showTyping() {
-            const messagesContainer = document.getElementById('chat-widget-messages');
+            const messagesContainer = this.shadowRoot.getElementById('chat-widget-messages');
             const typingDiv = document.createElement('div');
             typingDiv.id = 'chat-widget-typing';
             typingDiv.className = 'chat-widget-message bot';
@@ -462,12 +463,12 @@ document.body.appendChild(container);
         }
 
         hideTyping() {
-            const typing = document.getElementById('chat-widget-typing');
+            const typing = this.shadowRoot.getElementById('chat-widget-typing');
             if (typing) typing.remove();
         }
 
         async sendMessage() {
-            const input = document.getElementById('chat-widget-input');
+            const input = this.shadowRoot.getElementById('chat-widget-input');
             const message = input.value.trim();
             
             if (!message) return;
