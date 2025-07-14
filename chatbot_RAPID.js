@@ -8,7 +8,7 @@
     const config = {
         // API Configuration
         webhookUrl: 'https://raindance.app.n8n.cloud/webhook/a0d536ef-e072-4844-8090-2ee9b36f9fb8/chat',
-        
+
         // Colors & Branding
         primaryColor: '#D86C0C',        // Main brand color (button, header, user messages)
         primaryColorHover: '#D86C0C',   // Hover state for primary color
@@ -25,14 +25,14 @@
         buttonSize: '60px',
         
         // Content & Text
-        title: 'RAPID Bot',
+        title: 'BIM Bot',
         welcomeMessage: 'Hello! Welcome to our chat. How can I help you today?',
         placeholder: 'Type your message...',
         sendButtonText: 'Send',
         
         // Logo Configuration
         showLogo: false,                // Set to true to show logo in header
-        logoUrl: 'https://rapidtakeoffsandestimating.com.au/wp-content/uploads/2024/08/rapid-logo-black.png',                    // URL to your logo image
+        logoUrl: '',                    // URL to your logo image
         logoSize: '32px',               // Logo dimensions (square)
         logoPosition: 'left',           // 'left' or 'right' of title
         
@@ -82,6 +82,11 @@
         }
         
         .chat-widget-button {
+    display: flex !important;
+    position: fixed !important;
+    z-index: 2147483647 !important;
+    opacity: 1 !important;
+    visibility: visible !important;
             position: fixed;
             ${positionStyles.button.top ? `top: ${positionStyles.button.top};` : ''}
             ${positionStyles.button.bottom ? `bottom: ${positionStyles.button.bottom};` : ''}
@@ -302,34 +307,43 @@
         }
     `;
 
-const chatHTML = `
-    <div class="chat-widget-container">
-        <button class="chat-widget-button" id="chat-widget-toggle">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                xmlns="http://www.w3.org/2000/svg" stroke="#fff" stroke-width="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-        </button>
-
-        <div class="chat-widget-window" id="chat-widget-window">
-            <div class="chat-widget-header">
-                <div class="chat-widget-header-content">
-                    <img src="${config.logoUrl}" alt="Logo" class="chat-widget-logo" id="chat-widget-logo">
-                    <h3>${config.title}</h3>
+    // Generate HTML with config values
+    const chatHTML = `
+        <div class="chat-widget-container">
+            <button class="chat-widget-button" id="chat-widget-toggle">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+     xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2">
+  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+</svg>
+            </button>
+            
+            <div class="chat-widget-window" id="chat-widget-window">
+                <div class="chat-widget-header">
+                    <div class="chat-widget-header-content">
+                        <img src="${config.logoUrl}" alt="Logo" class="chat-widget-logo" id="chat-widget-logo">
+                        <h3>${config.title}</h3>
+                    </div>
+                    <button class="chat-widget-close" id="chat-widget-close">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+     xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2">
+  <line x1="18" y1="6" x2="6" y2="18"/>
+  <line x1="6" y1="6" x2="18" y2="18"/>
+</svg>
+                    </button>
                 </div>
-                <button class="chat-widget-close" id="chat-widget-close">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg" stroke="#fff" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"/>
-                        <line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
+                
+                <div class="chat-widget-messages" id="chat-widget-messages"></div>
+                
+                <div class="chat-widget-input-area">
+                    <div class="chat-widget-input-container">
+                        <input type="text" class="chat-widget-input" id="chat-widget-input" placeholder="${config.placeholder}">
+                        <button class="chat-widget-send" id="chat-widget-send">${config.sendButtonText}</button>
+                    </div>
+                </div>
             </div>
-
-            <!-- The rest of your HTML remains unchanged -->
         </div>
-    </div>
-`;
+    `;
+
     // Chat Widget Class (functionality preserved)
     class ChatWidget {
         constructor() {
@@ -344,22 +358,28 @@ const chatHTML = `
 
         init() {
             // Add styles
-            const styleSheet = document.createElement('style');
-            styleSheet.textContent = styles;
-            document.head.appendChild(styleSheet);
+            
 
             // Add HTML
-            const container = document.createElement('div');
-            container.innerHTML = chatHTML;
-            if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => document.body.appendChild(container));
-} else {
-  document.body.appendChild(container);
-}
+            
+const container = document.createElement('div');
+const shadow = container.attachShadow({ mode: 'open' });
+        this.shadowRoot = shadow;
+
+const styleSheet = document.createElement('style');
+styleSheet.textContent = styles;
+shadow.appendChild(styleSheet);
+
+const widgetWrapper = document.createElement('div');
+widgetWrapper.innerHTML = chatHTML;
+shadow.appendChild(widgetWrapper);
+
+document.body.appendChild(container);
+
 
             // Handle logo loading errors
             if (config.showLogo && config.logoUrl) {
-                const logo = document.getElementById('chat-widget-logo');
+                const logo = this.shadowRoot.getElementById('chat-widget-logo');
                 logo.onerror = () => {
                     logo.style.display = 'none';
                 };
@@ -380,10 +400,10 @@ const chatHTML = `
         }
 
         bindEvents() {
-            const toggleBtn = document.getElementById('chat-widget-toggle');
-            const closeBtn = document.getElementById('chat-widget-close');
-            const input = document.getElementById('chat-widget-input');
-            const sendBtn = document.getElementById('chat-widget-send');
+            const toggleBtn = this.shadowRoot.getElementById('chat-widget-toggle');
+            const closeBtn = this.shadowRoot.getElementById('chat-widget-close');
+            const input = this.shadowRoot.getElementById('chat-widget-input');
+            const sendBtn = this.shadowRoot.getElementById('chat-widget-send');
 
             toggleBtn.addEventListener('click', () => this.toggle());
             closeBtn.addEventListener('click', () => this.close());
@@ -394,24 +414,24 @@ const chatHTML = `
         }
 
         toggle() {
-            const window = document.getElementById('chat-widget-window');
+            const window = this.shadowRoot.getElementById('chat-widget-window');
             if (this.isOpen) {
                 this.close();
             } else {
                 window.classList.add('show');
                 this.isOpen = true;
-                document.getElementById('chat-widget-input').focus();
+                this.shadowRoot.getElementById('chat-widget-input').focus();
             }
         }
 
         close() {
-            const window = document.getElementById('chat-widget-window');
+            const window = this.shadowRoot.getElementById('chat-widget-window');
             window.classList.remove('show');
             this.isOpen = false;
         }
 
         addMessage(message, isUser = false) {
-            const messagesContainer = document.getElementById('chat-widget-messages');
+            const messagesContainer = this.shadowRoot.getElementById('chat-widget-messages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `chat-widget-message ${isUser ? 'user' : 'bot'}`;
             
@@ -434,7 +454,7 @@ const chatHTML = `
         }
 
         showTyping() {
-            const messagesContainer = document.getElementById('chat-widget-messages');
+            const messagesContainer = this.shadowRoot.getElementById('chat-widget-messages');
             const typingDiv = document.createElement('div');
             typingDiv.id = 'chat-widget-typing';
             typingDiv.className = 'chat-widget-message bot';
@@ -450,12 +470,12 @@ const chatHTML = `
         }
 
         hideTyping() {
-            const typing = document.getElementById('chat-widget-typing');
+            const typing = this.shadowRoot.getElementById('chat-widget-typing');
             if (typing) typing.remove();
         }
 
         async sendMessage() {
-            const input = document.getElementById('chat-widget-input');
+            const input = this.shadowRoot.getElementById('chat-widget-input');
             const message = input.value.trim();
             
             if (!message) return;
