@@ -7,7 +7,7 @@
     // Edit this section for each client
     const config = {
         // API Configuration
-        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/a0d536ef-e072-4844-8090-2ee9b36f9fb8/chat',
+        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/1184e628-1f25-497a-b09f-662832480696/chat',
 
         // Colors & Branding
         primaryColor: '#D86C0C',        // Main brand color (button, header, user messages)
