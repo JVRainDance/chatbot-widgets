@@ -7,11 +7,11 @@
     // Edit this section for each client
     const config = {
         // API Configuration
-        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/8a2b3071-fbaa-48f8-9431-b715df58f52b/chat',
+        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/a0d536ef-e072-4844-8090-2ee9b36f9fb8/chat',
 
         // Colors & Branding
-        primaryColor: '#55AFD3',        // Main brand color (button, header, user messages)
-        primaryColorHover: '#55AFD3',   // Hover state for primary color
+        primaryColor: '#D86C0C',        // Main brand color (button, header, user messages)
+        primaryColorHover: '#D86C0C',   // Hover state for primary color
         secondaryColor: '#f3f4f6',      // Bot message background
         textColor: '#374151',           // Bot message text color
         borderColor: '#e5e7eb',         // Border colors
@@ -25,7 +25,7 @@
         buttonSize: '60px',
         
         // Content & Text
-        title: '{{BRAND_NAME}} Bot',
+        title: 'RAPID Chat',
         welcomeMessage: 'Hello! Welcome to our chat. How can I help you today?',
         placeholder: 'Type your message...',
         sendButtonText: 'Send',
