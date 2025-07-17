@@ -10,8 +10,8 @@
         webhookUrl: 'https://raindance.app.n8n.cloud/webhook/1184e628-1f25-497a-b09f-662832480696/chat',
 
         // Colors & Branding
-        primaryColor: '#D86C0C',        // Main brand color (button, header, user messages)
-        primaryColorHover: '#D86C0C',   // Hover state for primary color
+        primaryColor: '#087ecf',        // Main brand color (button, header, user messages)
+        primaryColorHover: '#087ecf',   // Hover state for primary color
         secondaryColor: '#f3f4f6',      // Bot message background
         textColor: '#374151',           // Bot message text color
         borderColor: '#e5e7eb',         // Border colors
@@ -25,7 +25,7 @@
         buttonSize: '60px',
         
         // Content & Text
-        title: 'RAPID Chat',
+        title: 'RBM Chat',
         welcomeMessage: 'Hello! Welcome to our chat. How can I help you today?',
         placeholder: 'Type your message...',
         sendButtonText: 'Send',
