@@ -40,7 +40,7 @@
         // Behavior
         autoOpenDelay: 2000,            // Delay before auto-opening widget (milliseconds)
         autoOpen: true,                 // Auto-open widget on page load
-        initialGreeting: "Hello, I'm Sage. AI Assistant for Joshua. How can I help you today?",  // Initial greeting message
+        initialGreeting: "Hello, how can I help you today?",  // Initial greeting message
         
         // Animation
         animationDuration: '0.3s',      // Widget open/close animation speed
