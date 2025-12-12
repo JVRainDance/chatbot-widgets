@@ -1,0 +1,13 @@
+{
+  "name": "chatbot-widgets",
+  "version": "2.0.0",
+  "description": "Secure chatbot widgets with Vercel proxy",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+}
