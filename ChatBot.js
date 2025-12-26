@@ -6,8 +6,13 @@
     // ===== CUSTOMIZATION CONFIG =====
     // Edit this section for each client
     const config = {
-        // API Configuration
-        webhookUrl: 'https://raindance.app.n8n.cloud/webhook/b597fca9-95c7-429b-b375-0dc41d09066a/chat',
+        // API Configuration - SECURE PROXY
+        proxyUrl: 'https://chatbot-widgets-sigma.vercel.app/api/chat',
+        botId: 'ChatBot',
+
+        // Security
+        maxMessageLength: 500,
+        clientRateLimit: 3,
 
         // Colors & Branding (Matching Joshua's Website Theme)
         primaryColor: '#8b5cf6',        // Main brand color (purple from website)
@@ -38,9 +43,9 @@
         logoPosition: 'left',           // 'left' or 'right' of title
         
         // Behavior
-        autoOpenDelay: 2000,            // Delay before auto-opening widget (milliseconds)
-        autoOpen: true,                 // Auto-open widget on page load
-        initialGreeting: "Hello, I'm Sage. AI Assistant for Joshua. How can I help you today?",  // Initial greeting message
+        welcomeDelay: 2000,
+        autoOpen: true,
+        welcomeMessage: "Hello, I'm Sage. AI Assistant for Joshua. How can I help you today?"
         
         // Animation
         animationDuration: '0.3s',      // Widget open/close animation speed
@@ -410,7 +415,27 @@
         .chat-widget-send:active {
             transform: translateY(0);
         }
-        
+
+        .chat-widget-send:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .chat-widget-char-count {
+            font-size: 11px;
+            color: rgba(209, 213, 219, 0.6);
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        .chat-widget-char-count.warning {
+            color: #f59e0b;
+        }
+
+        .chat-widget-char-count.error {
+            color: #ef4444;
+        }
+
         .chat-widget-typing {
             display: flex;
             gap: 4px;
@@ -477,24 +502,46 @@
                 
                 <div class="chat-widget-input-area">
                     <div class="chat-widget-input-container">
-                        <input type="text" class="chat-widget-input" id="chat-widget-input" placeholder="${config.placeholder}">
+                        <input type="text" class="chat-widget-input" id="chat-widget-input" placeholder="${config.placeholder}" maxlength="${config.maxMessageLength}">
                         <button class="chat-widget-send" id="chat-widget-send">${config.sendButtonText}</button>
                     </div>
+                    <div class="chat-widget-char-count" id="chat-widget-char-count"></div>
                 </div>
             </div>
         </div>
     `;
 
-    // Chat Widget Class (functionality preserved)
+    // Secure Chat Widget Class
     class ChatWidget {
         constructor() {
             this.isOpen = false;
-            this.sessionId = this.generateSessionId();
+            this.sessionId = this.generateSecureSessionId();
+            this.messageTimes = [];
+            this.isSending = false;
             this.init();
         }
 
-        generateSessionId() {
-            return 'session-' + Math.random().toString(36).substr(2, 9);
+        generateSecureSessionId() {
+            if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+                return crypto.randomUUID();
+            } else if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
+                const array = new Uint8Array(16);
+                crypto.getRandomValues(array);
+                return 'session-' + Array.from(array, b => b.toString(16).padStart(2, '0')).join('');
+            } else {
+                console.warn('Crypto API not available, using less secure session ID');
+                return 'session-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+            }
+        }
+
+        checkClientRateLimit() {
+            const now = Date.now();
+            this.messageTimes = this.messageTimes.filter(time => now - time < 60000);
+            if (this.messageTimes.length >= config.clientRateLimit) {
+                return false;
+            }
+            this.messageTimes.push(now);
+            return true;
         }
 
         init() {
@@ -529,17 +576,15 @@ document.body.appendChild(container);
             // Bind events
             this.bindEvents();
 
-            // Add initial greeting and auto-open
-            if (config.initialGreeting) {
-                this.addMessage(config.initialGreeting, false);
-            }
-            
+            // Auto-open if configured
             if (config.autoOpen) {
-                console.log('Chat widget initialized. Opening in', config.autoOpenDelay, 'ms');
-                setTimeout(() => {
-                    this.toggle();
-                }, config.autoOpenDelay);
+                setTimeout(() => this.toggle(), 500);
             }
+
+            // Add welcome message
+            setTimeout(() => {
+                this.addMessage(config.welcomeMessage, false);
+            }, config.welcomeDelay);
         }
 
         bindEvents() {
@@ -551,9 +596,39 @@ document.body.appendChild(container);
             toggleBtn.addEventListener('click', () => this.toggle());
             closeBtn.addEventListener('click', () => this.close());
             sendBtn.addEventListener('click', () => this.sendMessage());
+
             input.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') this.sendMessage();
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    this.sendMessage();
+                }
             });
+
+            input.addEventListener('input', () => {
+                this.updateCharCount();
+            });
+        }
+
+        updateCharCount() {
+            const input = this.shadowRoot.getElementById('chat-widget-input');
+            const charCount = this.shadowRoot.getElementById('chat-widget-char-count');
+            if (!charCount) return;
+
+            const length = input.value.length;
+            const max = config.maxMessageLength;
+
+            if (length > 0) {
+                charCount.textContent = `${length}/${max}`;
+                if (length >= max) {
+                    charCount.className = 'chat-widget-char-count error';
+                } else if (length >= max * 0.9) {
+                    charCount.className = 'chat-widget-char-count warning';
+                } else {
+                    charCount.className = 'chat-widget-char-count';
+                }
+            } else {
+                charCount.textContent = '';
+            }
         }
 
         toggle() {
@@ -706,29 +781,62 @@ document.body.appendChild(container);
         }
 
         async sendMessage() {
+            if (this.isSending) return;
+
             const input = this.shadowRoot.getElementById('chat-widget-input');
+            const sendBtn = this.shadowRoot.getElementById('chat-widget-send');
             const message = input.value.trim();
-            
+
             if (!message) return;
-            
+
+            if (message.length > config.maxMessageLength) {
+                this.addMessage(`Message is too long (max ${config.maxMessageLength} characters)`, false);
+                return;
+            }
+
+            if (!this.checkClientRateLimit()) {
+                this.addMessage('You are sending messages too quickly. Please wait a moment.', false);
+                return;
+            }
+
+            this.isSending = true;
+            sendBtn.disabled = true;
+
             this.addMessage(message, true);
             input.value = '';
+            this.updateCharCount();
             this.showTyping();
-            
+
             try {
-                const response = await fetch(config.webhookUrl, {
+                const response = await fetch(config.proxyUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Bot-ID': config.botId
+                    },
                     body: JSON.stringify({
                         action: 'sendMessage',
                         sessionId: this.sessionId,
                         chatInput: message
                     })
                 });
-                
-                const data = await response.json();
+
                 this.hideTyping();
-                
+
+                if (response.status === 429) {
+                    const retryAfter = response.headers.get('Retry-After');
+                    this.addMessage(`Rate limit exceeded. Please wait ${retryAfter || 60} seconds.`, false);
+                    return;
+                }
+
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    this.addMessage(errorData.output || 'Sorry, I encountered an error. Please try again.', false);
+                    return;
+                }
+
+                const data = await response.json();
+
                 if (data.output) {
                     this.addMessage(data.output, false);
                 } else {
@@ -737,7 +845,10 @@ document.body.appendChild(container);
             } catch (error) {
                 console.error('Chat widget error:', error);
                 this.hideTyping();
-                this.addMessage('Sorry, I couldn\'t connect. Please try again.', false);
+                this.addMessage('Sorry, I couldn\'t connect. Please check your internet connection.', false);
+            } finally {
+                this.isSending = false;
+                sendBtn.disabled = false;
             }
         }
 
